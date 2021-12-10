@@ -10,14 +10,17 @@ function App() {
   const [current, setCurrent] = useState({})
 
   useEffect(() => {
+    getBounties()
+  }, [])
+
+  const getBounties = () => {
     fetch('http://localhost:8000/bounties')
       .then(response => response.json())
       .then(foundBounties => {
-        // console.log(foundBounties)
         setBounties(foundBounties)
       })
-  }, [])
-
+      .catch(err => console.log(err))
+  }
   const changeCurrent = bounty => {
     setCurrent(bounty)
   }
@@ -33,13 +36,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Wanted</h1>
-        <Display bounty={current}/>
+        <Display bounty={current} />
       </header>
       <section className='Poster-Board'>
         {posters}
       </section>
       <section className="App-header">
-        <Form />
+        <Form refreshBounties={getBounties} />
       </section>
     </div>
   );
